@@ -2,6 +2,7 @@ import DataTable from "./mathjs/dataTable.js"
 
 const tabla = new DataTable()
 
+/*
 tabla.readCsv('./customers-100.csv')
     .then((rows)=>{
         //console.log(rows)
@@ -10,3 +11,8 @@ tabla.readCsv('./customers-100.csv')
     .catch((err)=>{
         console.log(err)
     })
+*/
+
+await tabla.buildTable('./customers-100.csv')
+
+await console.log(tabla.information)
