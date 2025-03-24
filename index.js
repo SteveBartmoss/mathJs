@@ -13,6 +13,6 @@ tabla.readCsv('./customers-100.csv')
     })
 */
 
-await tabla.buildTable('./customers-100.csv')
+await tabla.buildTable('./iris.csv')
 
 await console.log(tabla.information)
