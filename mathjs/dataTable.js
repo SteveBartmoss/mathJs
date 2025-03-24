@@ -3,7 +3,7 @@ import fs from 'fs'
 export default class DataTable{
 
     headers=null
-    information = []
+    information = {}
 
     setHeaders(listHeaders){
         this.headers = listHeaders
@@ -40,15 +40,18 @@ export default class DataTable{
 
                 rows.shift()
 
-                this.information = rows.map(row => {
+                this.headers.forEach((header,index)=>{
+                    this.information[header] = []
+                    return
+                })
+
+                rows.map(row => {
                     let values = row.split(',')
-                    let obj = {}
 
                     this.headers.forEach((header, index) => {
-                        obj[header] = values[index]?.trim() || null
+                        this.information[header].push(values[index]?.trim() || null)
                     })
-
-                    return obj
+                    return
                 })
 
                 resolve(this.information)
