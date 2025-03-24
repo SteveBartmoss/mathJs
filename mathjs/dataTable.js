@@ -1,9 +1,9 @@
-import file from 'fs'
+import fs from 'fs'
 
 export default class DataTable{
 
     headers=null
-    information = null
+    information = []
 
     setHeaders(listHeaders){
         this.headers = listHeaders
@@ -11,12 +11,14 @@ export default class DataTable{
 
     readCsv(ruta){
         return new Promise((resolve,reject)=>{
-            file.readFile(ruta,'utf8',(err,data)=>{
+            fs.readFile(ruta,'utf8',(err,data)=>{
                 if(err){
                     console.log('Error reading the file:',err)
+                    reject(err)
                     return
                 }
                 const rows = data.split('\n')
+                // data.split('\n').map(row => row.trim()).filter(row => row.length > 0);
                 resolve(rows)
             })
         })
@@ -26,31 +28,33 @@ export default class DataTable{
     buildTable(ruta){
         return new Promise((resolve,reject)=>{
 
-            file.readFile(ruta,'utf8',(err,data)=>{
+            fs.readFile(ruta,'utf8',(err,data)=>{
                 if(err){
                     console.log('Error reading the file:'.err)
+                    reject(err)
+                    return
                 }
-                let rows = data.split('\n')
+
+                let rows = data.split('\n').map(row => row.trim()).filter(row => row.length > 0)
                 this.headers = rows[0].split(',')
 
-                roww.shift()
+                rows.shift()
 
-                rows.map(function(element){
-                  let values = element.split(',')
+                this.information = rows.map(row => {
+                    let values = row.split(',')
+                    let obj = {}
 
-                  function  buildObject(iterador,index,array){
-                    this.information.push({iterador:values[index]})
-                    return iterdador
-                  }
+                    this.headers.forEach((header, index) => {
+                        obj[header] = values[index]?.trim() || null
+                    })
 
-                  this.headers.forEach(buildObject)
+                    return obj
                 })
-                
-                resolve
+
+                resolve(this.information)
+
             })
         })
     }
-
-
 
 }
